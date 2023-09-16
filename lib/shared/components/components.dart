@@ -112,3 +112,46 @@ class ChatMessageReceive extends StatelessWidget {
     );
   }
 }
+
+class ChatContact extends StatelessWidget {
+  ChatContact({super.key, required this.user});
+  var user;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: Colors.grey.shade300,
+          child: Text(
+            "${user["UserName"][0]}",
+            style: TextStyle(
+                fontSize: 30, fontWeight: FontWeight.bold, color: Colors.grey),
+          ),
+          radius: 35,
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                user["UserName"],
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Hello My friend",
+                style: TextStyle(color: Colors.grey.shade600),
+              )
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}

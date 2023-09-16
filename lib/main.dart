@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:learn_bloc/Chat_App/homePage.dart';
 
 import 'Chat_App/Register.dart';
 import 'Chat_App/chatpage.dart';
@@ -27,7 +28,8 @@ class MainApp extends StatelessWidget {
         routes: {
           "RegisterPage": (context) => RegisterPage(),
           "LoginPage": (context) => LoginPage(),
-          "ChatPage": (context) => ChatPage()
+          "ChatPage": (context) => ChatPage(),
+          "HomePage": (context) => HomePage()
         },
         initialRoute: "LoginPage");
   }
