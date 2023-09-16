@@ -1,3 +1,3 @@
-# learn_bloc
+# Chat App
 
 A new Flutter project.
