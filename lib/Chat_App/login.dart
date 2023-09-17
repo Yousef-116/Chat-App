@@ -111,8 +111,8 @@ class _LoginPageState extends State<LoginPage> {
                                   .then((value) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Successes")));
-                                Navigator.pop(context);
-                                Navigator.pushNamed(context, "ChatPage");
+                                // Navigator.pop(context);
+                                Navigator.pushNamed(context, "HomePage");
                               });
                             } catch (ex) {
                               await ScaffoldMessenger.of(context).showSnackBar(

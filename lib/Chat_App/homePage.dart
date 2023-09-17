@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -43,9 +44,15 @@ class HomePage extends StatelessWidget {
                           topRight: Radius.circular(50),
                         )),
                     child: ListView.separated(
-                        itemBuilder: (context, index) => ChatContact(
+                        itemBuilder: (context, index) {
+                          if (snapshot.data?.docs[index]["email"] !=
+                              FirebaseAuth.instance.currentUser!.email)
+                            return ChatContact(
                               user: snapshot.data?.docs[index],
-                            ),
+                            );
+                          else
+                            return Container();
+                        },
                         separatorBuilder: (context, index) => SizedBox(
                               height: 10,
                             ),

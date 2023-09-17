@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 //import 'package:learn_bloc/To_Do_App/Cubit/cubit.dart';
 import 'package:learn_bloc/models/MessageModel.dart';
+
+import 'constans.dart';
 
 class ChatMessageSend extends StatelessWidget {
 //  ChatMessageSend({super.key, required this.msm, required this.printUsername});
@@ -78,7 +81,7 @@ class ChatMessageReceive extends StatelessWidget {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
-                  bottomLeft: Radius.circular(15))),
+                  bottomRight: Radius.circular(15))),
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
@@ -118,40 +121,55 @@ class ChatContact extends StatelessWidget {
   var user;
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          backgroundColor: Colors.grey.shade300,
-          child: Text(
-            "${user["UserName"][0]}",
-            style: TextStyle(
-                fontSize: 30, fontWeight: FontWeight.bold, color: Colors.grey),
+    return GestureDetector(
+      onTap: () {
+        List<String> emails = [
+          user["email"],
+          FirebaseAuth.instance.currentUser!.email.toString()
+        ];
+        emails.sort();
+
+        code = emails[0] + emails[1];
+
+        Navigator.pushNamed(context, "ChatPage");
+      },
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.grey.shade300,
+            child: Text(
+              "${user["UserName"][0]}",
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+            ),
+            radius: 35,
           ),
-          radius: 35,
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                user["UserName"],
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Hello My friend",
-                style: TextStyle(color: Colors.grey.shade600),
-              )
-            ],
+          SizedBox(
+            width: 10,
           ),
-        )
-      ],
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user["UserName"],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Hello My friend",
+                  style: TextStyle(color: Colors.grey.shade600),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

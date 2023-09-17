@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:learn_bloc/shared/components/constans.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../models/MessageModel.dart';
@@ -12,14 +13,17 @@ import '../shared/components/components.dart';
 // ignore: must_be_immutable
 class ChatPage extends StatelessWidget {
   ChatPage({super.key});
+  //========================
   final FocusNode textFormFieldFocusNode = FocusNode();
   final ScrollController scrollController = ScrollController();
-  CollectionReference Messages =
-      FirebaseFirestore.instance.collection('Message');
-  CollectionReference Users = FirebaseFirestore.instance.collection('Users');
   var printUser = true;
   var messageController = TextEditingController();
   bool messageType = false;
+  //========================
+  CollectionReference Messages =
+      FirebaseFirestore.instance.collection('Message');
+  CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+  //========================
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -28,7 +32,14 @@ class ChatPage extends StatelessWidget {
           List<Message> messagesList = [];
           if (snapshot.hasData)
             for (int i = 0; i < snapshot.data!.docs.length; i++) {
-              messagesList.add(Message.fromJson(snapshot.data!.docs[i]));
+              dynamic sms = snapshot.data!.docs[i];
+              try {
+                if (sms["code"].toString() == code.toString()) {
+                  messagesList.add(Message.fromJson(snapshot.data!.docs[i]));
+                }
+              } catch (e) {
+                print("error in chat page : ${e.toString()}");
+              }
             }
 
           return ModalProgressHUD(
@@ -202,7 +213,8 @@ class ChatPage extends StatelessWidget {
           "message": text,
           "SenderEmail": FirebaseAuth.instance.currentUser?.email,
           "SenderName": username.toString(),
-          "Time": DateTime.now()
+          "Time": DateTime.now(),
+          "code": code
         }).then((value) {
           messageController.clear();
           scrollController.animateTo(

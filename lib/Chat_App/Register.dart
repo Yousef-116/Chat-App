@@ -161,7 +161,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Success")));
                                 Navigator.pop(context);
-                                Navigator.pushNamed(context, "ChatPage");
+                                Navigator.pushNamed(context, "HomePage");
                               });
                             } catch (ex) {
                               ScaffoldMessenger.of(context).showSnackBar(
