@@ -11,18 +11,33 @@ import '../models/MessageModel.dart';
 import '../shared/components/components.dart';
 
 // ignore: must_be_immutable
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   ChatPage({super.key});
+
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
   //========================
   final FocusNode textFormFieldFocusNode = FocusNode();
+
   final ScrollController scrollController = ScrollController();
+
   var printUser = true;
+
   var messageController = TextEditingController();
+
   bool messageType = false;
+
+  //bool Mode = true;
+
   //========================
   CollectionReference Messages =
       FirebaseFirestore.instance.collection('Message');
+
   CollectionReference Users = FirebaseFirestore.instance.collection('Users');
+
   //========================
   @override
   Widget build(BuildContext context) {
@@ -55,7 +70,9 @@ class ChatPage extends StatelessWidget {
               appBar: AppBar(
                 toolbarHeight: 100,
                 elevation: 0,
-                backgroundColor: const Color(0xff158fd3),
+                backgroundColor: primeColor,
+
+//                backgroundColor: const Color(0xff158fd3),
                 title: Row(
                   // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -76,15 +93,31 @@ class ChatPage extends StatelessWidget {
                     Text(chatUser.toString())
                   ],
                 ),
+                actions: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          if (Mode)
+                            darkMode();
+                          else
+                            lightMode();
+
+                          Mode = !Mode;
+                        });
+                      },
+                      icon: Mode
+                          ? Icon(Icons.nightlight_round_sharp)
+                          : Icon(Icons.sunny))
+                ],
               ),
               body: Container(
-                color: const Color(0xff158fd3),
+                color: primeColor,
                 child: Column(
                   children: [
                     Expanded(
                       child: Container(
-                        decoration: const BoxDecoration(
-                            color: Color(0xfffafafa),
+                        decoration: BoxDecoration(
+                            color: backgroundColor,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(50),
                               topRight: Radius.circular(50),
@@ -152,7 +185,8 @@ class ChatPage extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        //  color: Colors.white,
+                        color: backgroundColor,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.grey.withOpacity(0.5), // shadow color
@@ -179,19 +213,25 @@ class ChatPage extends StatelessWidget {
                                 onTap: Send, child: const Icon(Icons.send)),
                             hintText: "Start typing",
                             filled: true,
-                            fillColor: Colors.grey.shade200,
+//                            fillColor: Colors.grey.shade200,
+                            fillColor: TextBoxBackgroundColor,
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 borderSide: BorderSide(
-                                    color: Colors.grey.shade200, width: 0)),
+                                    //color: Colors.grey.shade200
+                                    color: TextBoxBackgroundColor,
+                                    width: 0)),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Colors.grey.shade200, width: 0),
+//                                  color: Colors.grey.shade200
+                                  color: TextBoxBackgroundColor,
+                                  width: 0),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.grey.shade200),
+                              borderSide: BorderSide(
+//                                      color: Colors.grey.shade200
+                                  color: TextBoxBackgroundColor),
                               borderRadius: BorderRadius.circular(20),
                             )),
                       ),

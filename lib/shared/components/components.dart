@@ -20,7 +20,8 @@ class ChatMessageSend extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-              color: Color(0xffe0ecff),
+              //color: Color(0xffe0ecff),
+              color: sendMessageColor,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
@@ -32,7 +33,7 @@ class ChatMessageSend extends StatelessWidget {
               children: [
                 Text(
                   msm.message,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: TextColor),
                 ),
                 Row(
                   children: [
@@ -92,7 +93,8 @@ class ChatMessageReceive extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-              color: Colors.white,
+              // color: Colors.white,
+              color: ReceiveMessageColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.1), // shadow color
@@ -120,7 +122,7 @@ class ChatMessageReceive extends StatelessWidget {
                       ),
                 Text(
                   msm.message,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 16, color: TextColor),
                 ),
                 Text(
                   DateFormat('h:mm a').format(msm.Time.toDate()).toString(),
@@ -158,42 +160,48 @@ class ChatContact extends StatelessWidget {
 
         Navigator.pushNamed(context, "ChatPage");
       },
-      child: Row(
-        children: [
-          CircleAvatar(
-            backgroundColor: Colors.grey.shade300,
-            child: Text(
-              "${user["UserName"][0]}",
-              style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsetsDirectional.symmetric(horizontal: 8),
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: Colors.grey.shade300,
+              child: Text(
+                "${user["UserName"][0]}",
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey),
+              ),
+              radius: 35,
             ),
-            radius: 35,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  user["UserName"],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Hello My friend",
-                  style: TextStyle(color: Colors.grey.shade600),
-                )
-              ],
+            SizedBox(
+              width: 10,
             ),
-          )
-        ],
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    user["UserName"],
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: TextColor),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Hello My friend",
+                    style: TextStyle(color: Colors.grey.shade600),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
