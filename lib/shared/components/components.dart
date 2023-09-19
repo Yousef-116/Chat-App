@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -29,25 +30,35 @@ class ChatMessageSend extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // printUsername
-                //     ? (Text(
-                //         msm.SenderEmail,
-                //         style: TextStyle(fontSize: 12, color: Colors.blue),
-                //       ))
-                //     : SizedBox(
-                //         height: 0,
-                //       ),
                 Text(
                   msm.message,
                   style: TextStyle(fontSize: 16),
                 ),
-                Text(
-                  DateFormat('h:mm a').format(msm.Time.toDate()).toString(),
-                  // DateFormat('MMM d, EEE h:mm a')
-                  //     .format(msm.Time.toDate())
-                  //     .toString(),
-                  style: TextStyle(color: Color(0xff929396), fontSize: 11),
-                )
+                Row(
+                  children: [
+                    Text(
+                      DateFormat('h:mm a').format(msm.Time.toDate()).toString(),
+                      // DateFormat('MMM d, EEE h:mm a')
+                      //     .format(msm.Time.toDate())
+                      //     .toString(),
+                      style: TextStyle(color: Color(0xff929396), fontSize: 11),
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    msm.isRead
+                        ? Icon(
+                            Icons.fiber_smart_record_rounded,
+                            color: Colors.blue.shade300,
+                            size: 9,
+                          )
+                        : Icon(
+                            Icons.circle,
+                            color: Colors.grey.shade300,
+                            size: 9,
+                          ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -62,8 +73,20 @@ class ChatMessageReceive extends StatelessWidget {
       {super.key, required this.msm, required this.printUsername});
   final Message msm;
   final bool printUsername;
+
   @override
   Widget build(BuildContext context) {
+    if (msm.isRead == false) {
+      final messageRef =
+          FirebaseFirestore.instance.collection('Message').doc(msm.id);
+      messageRef.update({
+        'isRead': true,
+      }).then((value) {
+        print('Message marked as read successfully');
+      }).catchError((error) {
+        print('Failed to mark message as read: $error');
+      });
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -106,7 +129,7 @@ class ChatMessageReceive extends StatelessWidget {
                   //     .toString(),
 
                   style: TextStyle(color: Color(0xff929396), fontSize: 11),
-                )
+                ),
               ],
             ),
           ),
@@ -130,6 +153,8 @@ class ChatContact extends StatelessWidget {
         emails.sort();
 
         code = emails[0] + emails[1];
+
+        chatUser = user["UserName"];
 
         Navigator.pushNamed(context, "ChatPage");
       },

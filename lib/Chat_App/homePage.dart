@@ -24,14 +24,18 @@ class HomePage extends StatelessWidget {
                   toolbarHeight: 100,
                   elevation: 0,
                   backgroundColor: const Color(0xff158fd3),
-                  title: const Row(
+                  title: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Chats",
-                      ),
+                      // Image.asset('images/ChatAppLogo.png',
+                      //    height: 70, width: 70, fit: BoxFit.fitHeight),
+                      Image.network("https://i.imgur.com/GvODQ4X.png",
+                          height: 70, width: 70, fit: BoxFit.fitHeight)
                     ],
                   ),
+                  actions: [
+                    IconButton(onPressed: () {}, icon: Icon(Icons.sunny))
+                  ],
                 ),
                 body: Container(
                   color: Color(0xff158fd3),

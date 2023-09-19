@@ -35,13 +35,20 @@ class ChatPage extends StatelessWidget {
               dynamic sms = snapshot.data!.docs[i];
               try {
                 if (sms["code"].toString() == code.toString()) {
-                  messagesList.add(Message.fromJson(snapshot.data!.docs[i]));
+                  messagesList.add(Message.fromJson({
+                    "id": snapshot.data!.docs[i].id,
+                    "message": sms["message"],
+                    "SenderEmail": sms["SenderEmail"],
+                    "SenderName": sms["SenderName"],
+                    "Time": sms["Time"],
+                    "code": sms["code"],
+                    "isRead": sms["isRead"]
+                  }));
                 }
               } catch (e) {
-                print("error in chat page : ${e.toString()}");
+                print("error in chat page: ${e.toString()}");
               }
             }
-
           return ModalProgressHUD(
             inAsyncCall: snapshot.hasData ? false : true,
             child: Scaffold(
@@ -49,12 +56,24 @@ class ChatPage extends StatelessWidget {
                 toolbarHeight: 100,
                 elevation: 0,
                 backgroundColor: const Color(0xff158fd3),
-                title: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                title: Row(
+                  // mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Chat App",
+                    CircleAvatar(
+                      backgroundColor: Colors.grey.shade300,
+                      child: Text(
+                        "${chatUser.toString()[0]}",
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey),
+                      ),
+                      radius: 35,
                     ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(chatUser.toString())
                   ],
                 ),
               ),
@@ -214,7 +233,8 @@ class ChatPage extends StatelessWidget {
           "SenderEmail": FirebaseAuth.instance.currentUser?.email,
           "SenderName": username.toString(),
           "Time": DateTime.now(),
-          "code": code
+          "code": code,
+          "isRead": false
         }).then((value) {
           messageController.clear();
           scrollController.animateTo(
