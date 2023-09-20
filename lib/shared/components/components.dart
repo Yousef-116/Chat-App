@@ -206,3 +206,62 @@ class ChatContact extends StatelessWidget {
     );
   }
 }
+
+class SelectUsers extends StatefulWidget {
+  SelectUsers({super.key, required this.user, required this.list});
+  var user;
+  Map<String, String> list;
+  @override
+  State<SelectUsers> createState() => _SelectUsersState();
+}
+
+class _SelectUsersState extends State<SelectUsers> {
+  bool select = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(widget.user["UserName"]),
+        Container(
+          height: 25,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: select
+                    ? Colors.blue
+                    : Colors.grey, // Set your desired border color here
+                width: 2.0,
+              )),
+          child: MaterialButton(
+            height: 25,
+            onPressed: () {
+              if (select) {
+                widget.list.remove(widget.user["email"]);
+              } else {
+                widget.list[widget.user["email"]] = widget.user["UserName"];
+              }
+
+              select = !select;
+              // widget.list.forEach((key, value) {
+              //   print('$key: $value');
+              // });
+              setState(() {});
+            },
+            child: select
+                ? Text(
+                    "Unselected",
+                    style: TextStyle(color: Colors.blue),
+                  )
+                : Text(
+                    "Select",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+            //  focusColor: Colors.blue,
+          ),
+        )
+      ],
+    );
+  }
+}
