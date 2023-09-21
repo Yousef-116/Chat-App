@@ -140,6 +140,68 @@ class ChatMessageReceive extends StatelessWidget {
     );
   }
 }
+//============================================================
+
+//============================================================
+
+class SelectUsers extends StatefulWidget {
+  SelectUsers({super.key, required this.user, required this.list});
+  var user;
+  Map<String, String> list;
+  @override
+  State<SelectUsers> createState() => _SelectUsersState();
+}
+
+class _SelectUsersState extends State<SelectUsers> {
+  bool select = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(widget.user["UserName"]),
+        Container(
+          height: 25,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: select
+                    ? Colors.blue
+                    : Colors.grey, // Set your desired border color here
+                width: 2.0,
+              )),
+          child: MaterialButton(
+            height: 25,
+            onPressed: () {
+              if (select) {
+                widget.list.remove(widget.user["email"]);
+              } else {
+                widget.list[widget.user["email"]] = widget.user["UserName"];
+              }
+
+              select = !select;
+              // widget.list.forEach((key, value) {
+              //   print('$key: $value');
+              // });
+              setState(() {});
+            },
+            child: select
+                ? Text(
+                    "Unselected",
+                    style: TextStyle(color: Colors.blue),
+                  )
+                : Text(
+                    "Select",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+            //  focusColor: Colors.blue,
+          ),
+        )
+      ],
+    );
+  }
+}
 
 class ChatContact extends StatelessWidget {
   ChatContact({super.key, required this.user});
@@ -207,61 +269,64 @@ class ChatContact extends StatelessWidget {
   }
 }
 
-class SelectUsers extends StatefulWidget {
-  SelectUsers({super.key, required this.user, required this.list});
-  var user;
-  Map<String, String> list;
-  @override
-  State<SelectUsers> createState() => _SelectUsersState();
-}
+//============================================================
+class GroupContact extends StatelessWidget {
+  GroupContact({
+    super.key,
+    required this.groupDocuments,
+  });
 
-class _SelectUsersState extends State<SelectUsers> {
-  bool select = false;
+  final DocumentSnapshot<Object?> groupDocuments;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(widget.user["UserName"]),
-        Container(
-          height: 25,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                color: select
-                    ? Colors.blue
-                    : Colors.grey, // Set your desired border color here
-                width: 2.0,
-              )),
-          child: MaterialButton(
-            height: 25,
-            onPressed: () {
-              if (select) {
-                widget.list.remove(widget.user["email"]);
-              } else {
-                widget.list[widget.user["email"]] = widget.user["UserName"];
-              }
+    return GestureDetector(
+      onTap: () {
+        code = groupDocuments.id.toString();
+        chatUser = groupDocuments["GroupName"];
 
-              select = !select;
-              // widget.list.forEach((key, value) {
-              //   print('$key: $value');
-              // });
-              setState(() {});
-            },
-            child: select
-                ? Text(
-                    "Unselected",
-                    style: TextStyle(color: Colors.blue),
-                  )
-                : Text(
-                    "Select",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-            //  focusColor: Colors.blue,
+        Navigator.pushNamed(context, "ChatPage");
+      },
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: Colors.grey.shade300,
+            child: Text(
+              "${groupDocuments["GroupName"][0]}",
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+            ),
+            radius: 35,
           ),
-        )
-      ],
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  groupDocuments["GroupName"],
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: TextColor),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Hello My friend",
+                  style: TextStyle(color: Colors.grey.shade600),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

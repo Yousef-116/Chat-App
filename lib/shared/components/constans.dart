@@ -18,6 +18,7 @@ var backgroundColor = Color(0xFFFAFAFA);
 var sendMessageColor = Color(0xFFC2DCFB);
 var ReceiveMessageColor = Color(0xFFFFFFFF);
 var TextBoxBackgroundColor = Color(0xFFECF0F0);
+var ImageLogo = "";
 
 void lightMode() {
   TextColor = Color(0xFF000000);
@@ -26,6 +27,7 @@ void lightMode() {
   sendMessageColor = Color(0xFFC2DCFB);
   ReceiveMessageColor = Color(0xFFFFFFFF);
   TextBoxBackgroundColor = Color(0xFFECF0F0);
+  ImageLogo = "https://i.imgur.com/GvODQ4X.png";
 }
 
 void darkMode() {
@@ -35,4 +37,5 @@ void darkMode() {
   sendMessageColor = Color(0xFF0D407C);
   ReceiveMessageColor = Color(0xFF1A1A1A);
   TextBoxBackgroundColor = Color(0xFF2E2E2E);
+  ImageLogo = "https://i.imgur.com/f555ppd.png";
 }

@@ -41,8 +41,10 @@ class _HomePageState extends State<HomePage> {
           Map<String, dynamic> usersMap = groupsSnapshot.data!.docs[i]['Users'];
           if (usersMap.containsKey(currentUserEmail)) {
             print(
-                "User found in group: $currentUserEmail ========================================================================");
+                "Group ID  User found in group: $currentUserEmail ========================================================================");
             groupDocuments.add(groupsSnapshot.data!.docs[i]);
+            //print("group id ${groupsSnapshot.data!.docs[i].id.toString()}");
+            //print("confirm id  ${groupDocuments[i].id}");
           } else {
             print(
                 "user Not found ========================================================================");
@@ -80,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       // Image.asset('images/ChatAppLogo.png',
                       //    height: 70, width: 70, fit: BoxFit.fitHeight),
-                      Image.network("https://i.imgur.com/GvODQ4X.png",
+                      Image.network(ImageLogo,
                           height: 70, width: 70, fit: BoxFit.fitHeight)
                     ],
                   ),
@@ -193,16 +195,9 @@ class _HomePageState extends State<HomePage> {
                                       return Padding(
                                         padding: const EdgeInsetsDirectional
                                             .symmetric(horizontal: 15.0),
-                                        child: Row(
-                                          children: [
-                                            CircleAvatar(),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(groupDocuments[index]
-                                                ["GroupName"])
-                                          ],
-                                        ),
+                                        child: GroupContact(
+                                            groupDocuments:
+                                                groupDocuments[index]),
                                       );
                                     },
                                     separatorBuilder: (context, index) =>
