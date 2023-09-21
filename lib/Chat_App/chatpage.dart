@@ -45,7 +45,7 @@ class _ChatPageState extends State<ChatPage> {
         stream: Messages.orderBy("Time", descending: true).snapshots(),
         builder: (context, snapshot) {
           List<Message> messagesList = [];
-          if (snapshot.hasData)
+          if (snapshot.hasData) {
             for (int i = 0; i < snapshot.data!.docs.length; i++) {
               dynamic sms = snapshot.data!.docs[i];
               try {
@@ -61,13 +61,23 @@ class _ChatPageState extends State<ChatPage> {
                   }));
                 }
               } catch (e) {
-                print("error in chat page: ${e.toString()}");
+                //print("error in chat page: ${e.toString()}");
               }
             }
+          }
           return ModalProgressHUD(
             inAsyncCall: snapshot.hasData ? false : true,
             child: Scaffold(
               appBar: AppBar(
+                leading: IconButton(
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        'HomePage',
+                        (route) => false,
+                      );
+                    },
+                    icon: const Icon(Icons.arrow_back_ios_new)),
                 toolbarHeight: 100,
                 elevation: 0,
                 backgroundColor: primeColor,
@@ -78,16 +88,16 @@ class _ChatPageState extends State<ChatPage> {
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.grey.shade300,
+                      radius: 35,
                       child: Text(
-                        "${chatUser.toString()[0]}",
-                        style: TextStyle(
+                        "${chatUser[0]}",
+                        style: const TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Colors.grey),
                       ),
-                      radius: 35,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Text(chatUser.toString())
@@ -97,28 +107,31 @@ class _ChatPageState extends State<ChatPage> {
                   IconButton(
                       onPressed: () {
                         setState(() {
-                          if (Mode)
+                          if (Mode) {
                             darkMode();
-                          else
+                          } else {
                             lightMode();
+                          }
 
                           Mode = !Mode;
                         });
                       },
                       icon: Mode
-                          ? Icon(Icons.nightlight_round_sharp)
-                          : Icon(Icons.sunny))
+                          ? const Icon(Icons.nightlight_round_sharp)
+                          : const Icon(Icons.sunny))
                 ],
               ),
               body: Container(
                 color: primeColor,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Expanded(
                       child: Container(
                         decoration: BoxDecoration(
                             color: backgroundColor,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(50),
                               topRight: Radius.circular(50),
                             )),
@@ -135,10 +148,11 @@ class _ChatPageState extends State<ChatPage> {
                               itemBuilder: (context, index) {
                                 if (index < messagesList.length - 1) {
                                   if (messagesList[index].SenderEmail !=
-                                      messagesList[index + 1].SenderEmail)
+                                      messagesList[index + 1].SenderEmail) {
                                     printUser = true;
-                                  else
+                                  } else {
                                     printUser = false;
+                                  }
                                 }
                                 return messagesList[index].SenderEmail !=
                                         FirebaseAuth.instance.currentUser?.email
@@ -170,11 +184,11 @@ class _ChatPageState extends State<ChatPage> {
                                     ),
                                   );
                                 } else if (!printUser) {
-                                  return SizedBox(
+                                  return const SizedBox(
                                     height: 2,
                                   );
                                 } else {
-                                  return SizedBox(
+                                  return const SizedBox(
                                     height: 20,
                                   );
                                 }
@@ -207,7 +221,7 @@ class _ChatPageState extends State<ChatPage> {
                         },
                         controller: messageController,
                         keyboardType: TextInputType.text,
-                        style: const TextStyle(fontSize: 15),
+                        style: TextStyle(fontSize: 15, color: TextColor),
                         decoration: InputDecoration(
                             suffixIcon: GestureDetector(
                                 onTap: Send, child: const Icon(Icons.send)),
@@ -249,8 +263,8 @@ class _ChatPageState extends State<ChatPage> {
     messageController.clear();
     textFormFieldFocusNode.requestFocus();
     var username;
-    print(
-        "Email From Auth: ${FirebaseAuth.instance.currentUser?.email.toString()}");
+    //print(
+    //  "Email From Auth: ${FirebaseAuth.instance.currentUser?.email.toString()}");
     if (text != "") {
       FirebaseFirestore.instance
           .collection("Users")
@@ -260,13 +274,13 @@ class _ChatPageState extends State<ChatPage> {
           .then((QuerySnapshot<Map<String, dynamic>> snapshot) async {
         if (snapshot.size == 1) {
           username = await snapshot.docs[0].data()["UserName"];
-          print("Username: $username");
+          // print("Username: $username");
         } else {
-          print("User not found.");
-          print(username.toString());
+          //print("User not found.");
+          // print(username.toString());
         }
       }).catchError((error) {
-        print("Error getting username: $error");
+        // print("Error getting username: $error");
       }).then((value) {
         Messages.add({
           "message": text,

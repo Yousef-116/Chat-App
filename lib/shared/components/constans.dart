@@ -12,30 +12,30 @@ var code;
 
 bool Mode = true;
 
-var TextColor = Color(0xFF000000);
-var primeColor = Color(0xFF158FD3);
-var backgroundColor = Color(0xFFFAFAFA);
-var sendMessageColor = Color(0xFFC2DCFB);
-var ReceiveMessageColor = Color(0xFFFFFFFF);
-var TextBoxBackgroundColor = Color(0xFFECF0F0);
-var ImageLogo = "";
+var TextColor = const Color(0xFF000000);
+var primeColor = const Color(0xFF158FD3);
+var backgroundColor = const Color(0xFFFAFAFA);
+var sendMessageColor = const Color(0xFFC2DCFB);
+var ReceiveMessageColor = const Color(0xFFFFFFFF);
+var TextBoxBackgroundColor = const Color(0xFFECF0F0);
+var ImageLogo = "https://i.imgur.com/GvODQ4X.png";
 
 void lightMode() {
-  TextColor = Color(0xFF000000);
-  primeColor = Color(0xFF158FD3);
-  backgroundColor = Color(0xFFFAFAFA);
-  sendMessageColor = Color(0xFFC2DCFB);
-  ReceiveMessageColor = Color(0xFFFFFFFF);
-  TextBoxBackgroundColor = Color(0xFFECF0F0);
+  TextColor = const Color(0xFF000000);
+  primeColor = const Color(0xFF158FD3);
+  backgroundColor = const Color(0xFFFAFAFA);
+  sendMessageColor = const Color(0xFFC2DCFB);
+  ReceiveMessageColor = const Color(0xFFFFFFFF);
+  TextBoxBackgroundColor = const Color(0xFFECF0F0);
   ImageLogo = "https://i.imgur.com/GvODQ4X.png";
 }
 
 void darkMode() {
-  TextColor = Color(0xFFFEFEFE);
-  primeColor = Color(0xFF314CAC);
-  backgroundColor = Color(0xFF141414);
-  sendMessageColor = Color(0xFF0D407C);
-  ReceiveMessageColor = Color(0xFF1A1A1A);
-  TextBoxBackgroundColor = Color(0xFF2E2E2E);
+  TextColor = const Color(0xFFFEFEFE);
+  primeColor = const Color(0xFF314CAC);
+  backgroundColor = const Color(0xFF141414);
+  sendMessageColor = const Color(0xFF0D407C);
+  ReceiveMessageColor = const Color(0xFF1A1A1A);
+  TextBoxBackgroundColor = const Color(0xFF2E2E2E);
   ImageLogo = "https://i.imgur.com/f555ppd.png";
 }

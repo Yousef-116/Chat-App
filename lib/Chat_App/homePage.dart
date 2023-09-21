@@ -7,13 +7,14 @@ import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import '../shared/components/components.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  // ignore: non_constant_identifier_names
   bool Person = true;
   bool bottomSheet = false;
   var scaffoldKey = GlobalKey<ScaffoldState>();
@@ -40,14 +41,14 @@ class _HomePageState extends State<HomePage> {
           String? currentUserEmail = FirebaseAuth.instance.currentUser?.email;
           Map<String, dynamic> usersMap = groupsSnapshot.data!.docs[i]['Users'];
           if (usersMap.containsKey(currentUserEmail)) {
-            print(
-                "Group ID  User found in group: $currentUserEmail ========================================================================");
+            //print(
+            //  "Group ID  User found in group: $currentUserEmail ========================================================================");
             groupDocuments.add(groupsSnapshot.data!.docs[i]);
             //print("group id ${groupsSnapshot.data!.docs[i].id.toString()}");
             //print("confirm id  ${groupDocuments[i].id}");
           } else {
-            print(
-                "user Not found ========================================================================");
+            //print(
+            //  "user Not found ========================================================================");
           }
         }
 
@@ -72,6 +73,15 @@ class _HomePageState extends State<HomePage> {
             return Scaffold(
                 key: scaffoldKey,
                 appBar: AppBar(
+                  leading: IconButton(
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          'LoginPage',
+                          (route) => false,
+                        );
+                      },
+                      icon: const Icon(Icons.arrow_back_ios_new)),
                   toolbarHeight: 100,
                   elevation: 0,
 //                backgroundColor: const Color(0xff158fd3),
@@ -92,17 +102,18 @@ class _HomePageState extends State<HomePage> {
                         child: IconButton(
                             onPressed: () {
                               setState(() {
-                                if (Mode)
+                                if (Mode) {
                                   darkMode();
-                                else
+                                } else {
                                   lightMode();
+                                }
 
                                 Mode = !Mode;
                               });
                             },
                             icon: Mode
-                                ? Icon(Icons.nightlight_round_sharp)
-                                : Icon(Icons.sunny)))
+                                ? const Icon(Icons.nightlight_round_sharp)
+                                : const Icon(Icons.sunny)))
                   ],
                 ),
                 body: Container(
@@ -110,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                   color: primeColor,
                   child: Container(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
-                    padding: EdgeInsets.only(
+                    padding: const EdgeInsets.only(
                         //top: 15,
                         //  left: 15,
                         //    right: 15
@@ -118,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                     decoration: BoxDecoration(
                         //color: Color(0xFFFAFAFA),
                         color: backgroundColor,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(50),
                           topRight: Radius.circular(50),
                         )),
@@ -133,12 +144,12 @@ class _HomePageState extends State<HomePage> {
                                     Person = true;
                                   });
                                 },
+                                height: 45,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: Icon(
                                   Icons.person,
                                   color: Person ? Colors.blue : Colors.grey,
                                 ),
-                                height: 45,
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
                               ),
                             ),
                             Expanded(
@@ -148,17 +159,17 @@ class _HomePageState extends State<HomePage> {
                                     Person = false;
                                   });
                                 },
+                                height: 45,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
                                 child: Icon(
                                   Icons.groups,
                                   color: !Person ? Colors.blue : Colors.grey,
                                 ),
-                                height: 45,
-                                clipBehavior: Clip.antiAliasWithSaveLayer,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Person
@@ -168,18 +179,18 @@ class _HomePageState extends State<HomePage> {
                                       itemBuilder: (context, index) {
                                         if (userDocuments[index]["email"] !=
                                             FirebaseAuth
-                                                .instance.currentUser!.email)
+                                                .instance.currentUser!.email) {
                                           return ChatContact(
                                             user: userDocuments[index],
                                           );
-                                        else {
+                                        } else {
                                           username =
                                               userDocuments[index]["UserName"];
                                           return Container();
                                         }
                                       },
                                       separatorBuilder: (context, index) =>
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
                                       itemCount: userDocuments.length),
@@ -201,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                                       );
                                     },
                                     separatorBuilder: (context, index) =>
-                                        SizedBox(
+                                        const SizedBox(
                                       height: 10,
                                     ),
                                     itemCount: groupDocuments.length,
@@ -226,11 +237,11 @@ class _HomePageState extends State<HomePage> {
                                 "Users": userList
                               });
 
-                              userList.forEach((key, value) {
-                                print('$key: $value');
-
-                                //groups.doc("Users").update({});
-                              });
+                              // userList.forEach((key, value) {
+                              //   print('$key: $value');
+                              //
+                              //   //groups.doc("Users").update({});
+                              // });
                               groupNameController.clear();
                               Navigator.pop(context);
                               bottomSheet = false;
@@ -256,10 +267,11 @@ class _HomePageState extends State<HomePage> {
                                                 keyboardType:
                                                     TextInputType.text,
                                                 validator: (value) {
-                                                  if (value!.isEmpty)
+                                                  if (value!.isEmpty) {
                                                     return "Enter Group Name";
-                                                  else
+                                                  } else {
                                                     return null;
+                                                  }
                                                 },
                                                 style: const TextStyle(
                                                     fontSize: 15),
@@ -300,26 +312,28 @@ class _HomePageState extends State<HomePage> {
                                                   if (userDocuments[index]
                                                           ["email"] !=
                                                       FirebaseAuth.instance
-                                                          .currentUser!.email)
+                                                          .currentUser!.email) {
                                                     return SelectUsers(
                                                       user:
                                                           userDocuments[index],
                                                       list: userList,
                                                     );
-                                                  else
+                                                  } else {
                                                     return Container();
+                                                  }
                                                 },
                                                 separatorBuilder:
                                                     (context, index) {
                                                   if (userDocuments[index]
                                                           ["email"] !=
                                                       FirebaseAuth.instance
-                                                          .currentUser!.email)
-                                                    return SizedBox(
+                                                          .currentUser!.email) {
+                                                    return const SizedBox(
                                                       height: 10,
                                                     );
-                                                  else
-                                                    return SizedBox();
+                                                  } else {
+                                                    return const SizedBox();
+                                                  }
                                                 },
                                                 itemCount:
                                                     userDocuments.length),
@@ -340,11 +354,11 @@ class _HomePageState extends State<HomePage> {
                         },
                         //backgroundColor: Colors.white,
                         child: bottomSheet
-                            ? Icon(
+                            ? const Icon(
                                 Icons.add,
                                 // color: Colors.grey,
                               )
-                            : Icon(
+                            : const Icon(
                                 Icons.add,
                                 //color: Colors.grey,
                                 shadows: [

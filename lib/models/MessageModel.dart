@@ -1,9 +1,10 @@
+// ignore: file_names
 class Message {
-  var id;
+  final String id;
   final String message;
   final String SenderEmail;
   final String code;
-  var SenderName;
+  final String SenderName;
   final dynamic Time;
   bool isRead;
 

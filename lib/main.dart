@@ -26,10 +26,10 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          "RegisterPage": (context) => RegisterPage(),
-          "LoginPage": (context) => LoginPage(),
+          "RegisterPage": (context) => const RegisterPage(),
+          "LoginPage": (context) => const LoginPage(),
           "ChatPage": (context) => ChatPage(),
-          "HomePage": (context) => HomePage()
+          "HomePage": (context) => const HomePage()
         },
         initialRoute: "LoginPage");
   }

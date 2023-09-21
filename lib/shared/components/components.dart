@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +11,7 @@ import 'constans.dart';
 
 class ChatMessageSend extends StatelessWidget {
 //  ChatMessageSend({super.key, required this.msm, required this.printUsername});
-  ChatMessageSend({super.key, required this.msm});
+  const ChatMessageSend({super.key, required this.msm});
 
   final Message msm;
   //final printUsername;
@@ -20,9 +22,8 @@ class ChatMessageSend extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-              //color: Color(0xffe0ecff),
               color: sendMessageColor,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
                   bottomLeft: Radius.circular(15))),
@@ -31,9 +32,13 @@ class ChatMessageSend extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  msm.message,
-                  style: TextStyle(fontSize: 16, color: TextColor),
+                Container(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7),
+                  child: Text(
+                    msm.message,
+                    style: TextStyle(fontSize: 16, color: TextColor),
+                  ),
                 ),
                 Row(
                   children: [
@@ -42,9 +47,10 @@ class ChatMessageSend extends StatelessWidget {
                       // DateFormat('MMM d, EEE h:mm a')
                       //     .format(msm.Time.toDate())
                       //     .toString(),
-                      style: TextStyle(color: Color(0xff929396), fontSize: 11),
+                      style: const TextStyle(
+                          color: Color(0xff929396), fontSize: 11),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
                     msm.isRead
@@ -83,27 +89,27 @@ class ChatMessageReceive extends StatelessWidget {
       messageRef.update({
         'isRead': true,
       }).then((value) {
-        print('Message marked as read successfully');
+        //print('Message marked as read successfully');
       }).catchError((error) {
-        print('Failed to mark message as read: $error');
+        //print('Failed to mark message as read: $error');
       });
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           decoration: BoxDecoration(
-              // color: Colors.white,
               color: ReceiveMessageColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.1), // shadow color
                   spreadRadius: 1, // spread radius
                   blurRadius: 7, // blur radius
-                  offset: Offset(1, 0), // changes position of shadow
+                  offset: const Offset(1, 0), // changes position of shadow
                 ),
               ],
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(15),
                   topRight: Radius.circular(15),
                   bottomRight: Radius.circular(15))),
@@ -115,14 +121,19 @@ class ChatMessageReceive extends StatelessWidget {
                 printUsername
                     ? (Text(
                         msm.SenderName,
-                        style: TextStyle(fontSize: 12, color: Colors.green),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.green),
                       ))
-                    : SizedBox(
+                    : const SizedBox(
                         height: 0,
                       ),
-                Text(
-                  msm.message,
-                  style: TextStyle(fontSize: 16, color: TextColor),
+                Container(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width * 0.7),
+                  child: Text(
+                    msm.message,
+                    style: TextStyle(fontSize: 16, color: TextColor),
+                  ),
                 ),
                 Text(
                   DateFormat('h:mm a').format(msm.Time.toDate()).toString(),
@@ -130,7 +141,8 @@ class ChatMessageReceive extends StatelessWidget {
                   //     .format(msm.Time.toDate())
                   //     .toString(),
 
-                  style: TextStyle(color: Color(0xff929396), fontSize: 11),
+                  style:
+                      const TextStyle(color: Color(0xff929396), fontSize: 11),
                 ),
               ],
             ),
@@ -187,11 +199,11 @@ class _SelectUsersState extends State<SelectUsers> {
               setState(() {});
             },
             child: select
-                ? Text(
+                ? const Text(
                     "Unselected",
                     style: TextStyle(color: Colors.blue),
                   )
-                : Text(
+                : const Text(
                     "Select",
                     style: TextStyle(color: Colors.grey),
                   ),
@@ -228,16 +240,16 @@ class ChatContact extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundColor: Colors.grey.shade300,
+              radius: 35,
               child: Text(
                 "${user["UserName"][0]}",
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
                     color: Colors.grey),
               ),
-              radius: 35,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Expanded(
@@ -252,7 +264,7 @@ class ChatContact extends StatelessWidget {
                         fontSize: 18,
                         color: TextColor),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text(
@@ -271,7 +283,7 @@ class ChatContact extends StatelessWidget {
 
 //============================================================
 class GroupContact extends StatelessWidget {
-  GroupContact({
+  const GroupContact({
     super.key,
     required this.groupDocuments,
   });
@@ -291,16 +303,16 @@ class GroupContact extends StatelessWidget {
         children: [
           CircleAvatar(
             backgroundColor: Colors.grey.shade300,
+            radius: 35,
             child: Text(
               "${groupDocuments["GroupName"][0]}",
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.bold,
                   color: Colors.grey),
             ),
-            radius: 35,
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Expanded(
@@ -315,7 +327,7 @@ class GroupContact extends StatelessWidget {
                       fontSize: 18,
                       color: TextColor),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
