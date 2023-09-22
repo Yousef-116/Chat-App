@@ -30,6 +30,8 @@ class _ChatPageState extends State<ChatPage> {
 
   bool messageType = false;
 
+  bool textDirection = false;
+
   //bool Mode = true;
 
   //========================
@@ -104,21 +106,24 @@ class _ChatPageState extends State<ChatPage> {
                   ],
                 ),
                 actions: [
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          if (Mode) {
-                            darkMode();
-                          } else {
-                            lightMode();
-                          }
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            if (Mode) {
+                              darkMode();
+                            } else {
+                              lightMode();
+                            }
 
-                          Mode = !Mode;
-                        });
-                      },
-                      icon: Mode
-                          ? const Icon(Icons.nightlight_round_sharp)
-                          : const Icon(Icons.sunny))
+                            Mode = !Mode;
+                          });
+                        },
+                        icon: Mode
+                            ? const Icon(Icons.nightlight_round_sharp)
+                            : const Icon(Icons.sunny)),
+                  )
                 ],
               ),
               body: Container(
@@ -174,13 +179,21 @@ class _ChatPageState extends State<ChatPage> {
                                             .Time
                                             .toDate())
                                         .toString()) {
-                                  return Center(
-                                    child: Container(
-                                      // color: Colors.deepOrange,
-                                      child: Text(DateFormat.yMd()
-                                          .format(
-                                              messagesList[index].Time.toDate())
-                                          .toString()),
+                                  return SizedBox(
+                                    // color: Colors.deepOrange,
+                                    height: 50,
+                                    child: Center(
+                                      child: Text(
+                                        DateFormat.yMd()
+                                            .format(messagesList[index]
+                                                .Time
+                                                .toDate())
+                                            .toString(),
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
                                   );
                                 } else if (!printUser) {
@@ -214,8 +227,23 @@ class _ChatPageState extends State<ChatPage> {
                       padding: const EdgeInsetsDirectional.all(20),
                       child: TextFormField(
                         focusNode: textFormFieldFocusNode,
-                        //textDirection: TextDirection.LTR,
-                        //textAlign: TextAlign.end,
+                        onChanged: (text) {
+                          final firstLetter = text.codeUnitAt(0);
+                          setState(() {
+                            if ((0x0600 <= firstLetter &&
+                                    firstLetter <= 0x06FF) ||
+                                (0xFB50 <= firstLetter &&
+                                    firstLetter <= 0xFC3F) ||
+                                (0xFE70 <= firstLetter &&
+                                    firstLetter <= 0xFEFF)) {
+                              textDirection = true;
+                            } else
+                              textDirection = false;
+                          });
+                        },
+                        textAlign:
+                            textDirection ? TextAlign.end : TextAlign.start,
+                        //  textDirection: textDirection ? TextDirection.rtl : TextDirection.ltr,
                         onFieldSubmitted: (data) {
                           Send();
                         },

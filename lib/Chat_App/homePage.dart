@@ -27,49 +27,49 @@ class _HomePageState extends State<HomePage> {
     CollectionReference users = FirebaseFirestore.instance.collection('Users');
     CollectionReference groups =
         FirebaseFirestore.instance.collection('Groups');
+    //  CollectionReference messages =
+    //    FirebaseFirestore.instance.collection('Message');
+
+    // groups =================================================================
+
     return StreamBuilder<QuerySnapshot>(
-      stream: groups
-          .snapshots(), // Listen for real-time updates on "Groups" collection
+      stream: groups.snapshots(),
       builder: (context, groupsSnapshot) {
         if (groupsSnapshot.connectionState == ConnectionState.waiting) {
-          // return CircularProgressIndicator(); // Show a loading indicator while waiting for initial data
+          // return CircularProgressIndicator();
           return ModalProgressHUD(inAsyncCall: true, child: Container());
         }
         List<DocumentSnapshot> groupDocuments = [];
-        // Handle changes in "Groups" collection
+
         for (int i = 0; i < groupsSnapshot.data!.docs.length; i++) {
           String? currentUserEmail = FirebaseAuth.instance.currentUser?.email;
           Map<String, dynamic> usersMap = groupsSnapshot.data!.docs[i]['Users'];
-          if (usersMap.containsKey(currentUserEmail)) {
-            //print(
-            //  "Group ID  User found in group: $currentUserEmail ========================================================================");
+          if (usersMap.containsKey(currentUserEmail))
             groupDocuments.add(groupsSnapshot.data!.docs[i]);
-            //print("group id ${groupsSnapshot.data!.docs[i].id.toString()}");
-            //print("confirm id  ${groupDocuments[i].id}");
-          } else {
-            //print(
-            //  "user Not found ========================================================================");
-          }
         }
 
         //List<DocumentSnapshot> groupDocuments = groupsSnapshot.data!.docs;
+        // messages =================================================================
+
+        // return StreamBuilder<QuerySnapshot>(
+        //   stream: messages.snapshots(),
+        //   builder: (context, messagesSnapshot) {
+        //     if (messagesSnapshot.connectionState == ConnectionState.waiting) {
+        //       // return CircularProgressIndicator();
+        //       return ModalProgressHUD(inAsyncCall: true, child: Container());
+        //     }
+
+        // users =================================================================
 
         return StreamBuilder<QuerySnapshot>(
-          stream: users
-              .snapshots(), // Listen for real-time updates on "Users" collection
+          stream: users.snapshots(),
           builder: (context, usersSnapshot) {
             if (usersSnapshot.connectionState == ConnectionState.waiting) {
-              return ModalProgressHUD(
-                  inAsyncCall: true,
-                  child:
-                      Container()); // Show a loading indicator while waiting for initial data
+              return ModalProgressHUD(inAsyncCall: true, child: Container());
             }
 
-            // Handle changes in "Users" collection
             List<DocumentSnapshot> userDocuments = usersSnapshot.data!.docs;
-            // Process and use the userDocuments as needed
 
-            // Build your UI using the combined data from "Groups" and "Users" collections
             return Scaffold(
                 key: scaffoldKey,
                 appBar: AppBar(
@@ -84,14 +84,10 @@ class _HomePageState extends State<HomePage> {
                       icon: const Icon(Icons.arrow_back_ios_new)),
                   toolbarHeight: 100,
                   elevation: 0,
-//                backgroundColor: const Color(0xff158fd3),
                   backgroundColor: primeColor,
-
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Image.asset('images/ChatAppLogo.png',
-                      //    height: 70, width: 70, fit: BoxFit.fitHeight),
                       Image.network(ImageLogo,
                           height: 70, width: 70, fit: BoxFit.fitHeight)
                     ],
@@ -117,17 +113,10 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 body: Container(
-                  //color: Color(0xff158fd3),
                   color: primeColor,
                   child: Container(
                     clipBehavior: Clip.antiAliasWithSaveLayer,
-                    padding: const EdgeInsets.only(
-                        //top: 15,
-                        //  left: 15,
-                        //    right: 15
-                        ),
                     decoration: BoxDecoration(
-                        //color: Color(0xFFFAFAFA),
                         color: backgroundColor,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(50),
@@ -189,10 +178,17 @@ class _HomePageState extends State<HomePage> {
                                           return Container();
                                         }
                                       },
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(
+                                      separatorBuilder: (context, index) {
+                                        if (userDocuments[index]["email"] !=
+                                            FirebaseAuth
+                                                .instance.currentUser!.email) {
+                                          return const SizedBox(
                                             height: 10,
-                                          ),
+                                          );
+                                        } else {
+                                          return const SizedBox();
+                                        }
+                                      },
                                       itemCount: userDocuments.length),
                                 ),
                               )
@@ -202,7 +198,6 @@ class _HomePageState extends State<HomePage> {
                                     shrinkWrap: true,
                                     //  physics: const NeverScrollableScrollPhysics(),
                                     itemBuilder: (context, index) {
-                                      // Group Contact Widget Cont...............
                                       return Padding(
                                         padding: const EdgeInsetsDirectional
                                             .symmetric(horizontal: 15.0),
@@ -252,7 +247,7 @@ class _HomePageState extends State<HomePage> {
                                 ?.showBottomSheet(elevation: 20, (context) {
                                   return Container(
                                     width: double.infinity,
-                                    color: Colors.white,
+                                    color: backgroundColor,
                                     child: SingleChildScrollView(
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
@@ -273,10 +268,13 @@ class _HomePageState extends State<HomePage> {
                                                     return null;
                                                   }
                                                 },
-                                                style: const TextStyle(
-                                                    fontSize: 15),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    color: TextColor),
                                                 decoration: InputDecoration(
                                                     labelText: "Group Name",
+                                                    labelStyle: TextStyle(
+                                                        color: Colors.grey),
                                                     border: OutlineInputBorder(
                                                         borderRadius:
                                                             BorderRadius
@@ -352,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                             bottomSheet = true;
                           }
                         },
-                        //backgroundColor: Colors.white,
+                        backgroundColor: primeColor,
                         child: bottomSheet
                             ? const Icon(
                                 Icons.add,
@@ -371,5 +369,7 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+    // },
+    //);
   }
 }

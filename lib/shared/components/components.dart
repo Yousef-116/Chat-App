@@ -11,8 +11,8 @@ import 'constans.dart';
 
 class ChatMessageSend extends StatelessWidget {
 //  ChatMessageSend({super.key, required this.msm, required this.printUsername});
-  const ChatMessageSend({super.key, required this.msm});
-
+  const ChatMessageSend({super.key, required this.msm, this.index});
+  final index;
   final Message msm;
   //final printUsername;
   @override
@@ -37,7 +37,7 @@ class ChatMessageSend extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 0.7),
                   child: Text(
                     msm.message,
-                    style: TextStyle(fontSize: 16, color: TextColor),
+                    style: TextStyle(fontSize: 15, color: TextColor),
                   ),
                 ),
                 Row(
@@ -77,10 +77,10 @@ class ChatMessageSend extends StatelessWidget {
 
 class ChatMessageReceive extends StatelessWidget {
   const ChatMessageReceive(
-      {super.key, required this.msm, required this.printUsername});
+      {super.key, required this.msm, required this.printUsername, this.index});
   final Message msm;
   final bool printUsername;
-
+  final index;
   @override
   Widget build(BuildContext context) {
     if (msm.isRead == false) {
@@ -103,10 +103,10 @@ class ChatMessageReceive extends StatelessWidget {
               color: ReceiveMessageColor,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1), // shadow color
-                  spreadRadius: 1, // spread radius
-                  blurRadius: 7, // blur radius
-                  offset: const Offset(1, 0), // changes position of shadow
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 1,
+                  blurRadius: 7,
+                  offset: const Offset(1, 0),
                 ),
               ],
               borderRadius: const BorderRadius.only(
@@ -132,7 +132,7 @@ class ChatMessageReceive extends StatelessWidget {
                       maxWidth: MediaQuery.of(context).size.width * 0.7),
                   child: Text(
                     msm.message,
-                    style: TextStyle(fontSize: 16, color: TextColor),
+                    style: TextStyle(fontSize: 15, color: TextColor),
                   ),
                 ),
                 Text(
@@ -172,7 +172,10 @@ class _SelectUsersState extends State<SelectUsers> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(widget.user["UserName"]),
+        Text(
+          widget.user["UserName"],
+          style: TextStyle(color: TextColor),
+        ),
         Container(
           height: 25,
           decoration: BoxDecoration(
